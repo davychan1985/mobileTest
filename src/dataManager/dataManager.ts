@@ -1,4 +1,4 @@
-import { ShippingOrder } from '../types';
+import { ShippingOrder } from '@/src/types';
 import localCache from './cache';
 import shippingService from './service';
 
@@ -6,6 +6,21 @@ const CACHE_KEY = 'shipping_order_data';
 
 // 数据管理中心，协调服务层和缓存层
 class OrderDataManager {
+  // 获取所有航运订单
+  async getShippingOrders(): Promise<ShippingOrder[]> {
+    try {
+      // 从服务端获取订单数据
+      const response = await shippingService.getShippingOrders();
+      
+      // 将单个订单包装为数组返回
+      // 如果需要多个订单，可以扩展此方法以从多个来源获取数据
+      return response.data ? [response.data] : [];
+    } catch (error) {
+      console.error('获取航运订单失败:', error);
+      throw error;
+    }
+  }
+
   // 订阅者列表（用于数据更新通知）
   private dataSubscribers = new Set<(data: ShippingOrder | null) => void>();
   // 当前缓存的数据
@@ -25,8 +40,10 @@ class OrderDataManager {
       if (!orderData) {
         const response = await shippingService.getShippingOrders();
         orderData = response.data;
-        // 保存到缓存
-        await localCache.saveData(CACHE_KEY, orderData);
+        // 仅在数据不为 null 时保存到缓存
+        if (orderData) {
+          await localCache.saveData(CACHE_KEY, orderData);
+        }
       }
       
       // 更新当前数据并通知订阅者

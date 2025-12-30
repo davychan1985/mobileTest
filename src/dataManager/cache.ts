@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ShippingOrder } from '../types';
+import { ShippingOrder } from '@/src/types';
 
 // 缓存项结构
 interface CacheEntry {

@@ -1,3 +1,5 @@
+import orderDataManager from "@/src/dataManager/dataManager";
+import { ShippingOrder, VoyageSegment } from "@/src/types";
 import React, { useEffect, useState } from "react";
 import {
   FlatList,
@@ -6,8 +8,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import orderDataManager from "../../src/dataManager/dataManager";
-import { ShippingOrder, VoyageSegment } from "../../src/types";
 
 const ShippingOrderScreen = () => {
   const [orderInfo, setOrderInfo] = useState<ShippingOrder | null>(null);
@@ -15,7 +15,7 @@ const ShippingOrderScreen = () => {
 
   // 组件挂载时获取数据并订阅更新
   useEffect(() => {
-    const unsubscribe = orderDataManager.subscribeToUpdates((data) => {
+    const unsubscribe = orderDataManager.subscribeToUpdates((data: ShippingOrder | null) => {
       setOrderInfo(data);
       setIsLoading(false);
       console.log("获取到的订单数据:", data);

@@ -1,5 +1,5 @@
-import orderData from '../../booking.json';
-import { OrderResponse } from '../types';
+import orderData from '@/booking.json';
+import { OrderResponse } from '@/src/types';
 
 // 数据服务层，负责获取原始数据
 class ShippingDataService {
